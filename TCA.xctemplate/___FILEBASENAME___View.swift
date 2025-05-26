@@ -1,38 +1,42 @@
 import ComposableArchitecture
+import DesignSystem
+import LifecycleHelpers
 import SwiftUI
 
-// MARK: - View
+public struct ___VARIABLE_name___View: AuthenticatedView {
+    let store: StoreOf<___VARIABLE_name___>
 
-public struct ___VARIABLE_name___View: View {
-    let store: StoreOf<___VARIABLE_name___Reducer>
-
-    init(store: StoreOf<___VARIABLE_name___Reducer>) {
+    public init(store: StoreOf<___VARIABLE_name___>) {
         self.store = store
     }
 
-    public var body: some View {
-        WithViewStore(store) { viewStore in
+    public var content: some View {
+        WithPerceptionTracking {
             VStack {
-                Text("View")
+                Text("___VARIABLE_name___")
             }
-            .onFirstAppear {
-                viewStore.send(.onFirstAppear)
+            .task {
+                await store.send(.onTask).finish()
             }
+            .ds.navigationBarAppearance(
+                title: "TCA Template",
+                subtitle: nil,
+                mode: { .default },
+                willDismiss: { }
+            )
         }
     }
 }
 
-// MARK: - Preview
-
-struct ___VARIABLE_name___View_Previews: PreviewProvider {
-    static var previews: some View {
-        ScrollView {
-            ___VARIABLE_name___View(
-                store: .init(
-                    initialState: .init(), 
-                    reducer: ___VARIABLE_name___Reducer()
-                )
+#Preview {
+    NavigationView {
+        ___VARIABLE_name___View(
+            store: .init(
+                initialState: .init(),
+                reducer: { ___VARIABLE_name___() }
             )
-        }
+        )
     }
+    .navigationBarTitleDisplayMode(.inline)
+    .environment(\.locale, .init(identifier: "en"))
 }
